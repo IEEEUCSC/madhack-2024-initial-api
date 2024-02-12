@@ -107,12 +107,13 @@ const seedDB = () => {
 
         let result = JSON.parse(content) || {};
 
-        let [applicant, employer, jobs, applications] = await Promise.all([
+        let [applicant, employer, jobs,] = await Promise.all([
             seedUsers(15, userUtils.roles.APPLICANT, 'applicant', result),
             seedUsers(15, userUtils.roles.EMPLOYER, 'employer', result),
-            seedJobs(10, 4, 'jobs', result),
-            seedApplications(5, 10, 5, 'applications', result)
+            seedJobs(10, 4, 'jobs', result)
         ]);
+        
+        let applications = await seedApplications(5, 10, 5, 'applications', result);
 
         fs.writeFile(
             'seed/seed.json',

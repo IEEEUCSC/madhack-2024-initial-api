@@ -3,7 +3,11 @@
 /logs/*.log
 /common
 /images/*
+/files/*
 /hidden
+
+!/images/.gitkeep
+!/files/.gitkeep
 
 .env
 .env.local

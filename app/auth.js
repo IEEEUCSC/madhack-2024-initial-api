@@ -29,10 +29,13 @@ module.exports = {
                 });
             }
 
+            // if role is not set or empty set it to APPLICANT
+            if (!body.role) body.role = userUtils.roles.APPLICANT;
+
             const user = new User({
                 email: body.email,
                 password: bcrypt.hashSync(body.password, salt),
-                role: userUtils.roles.APPLICANT,
+                role: body.role,
                 profile: {
                     name: body.name
                 }
@@ -40,9 +43,26 @@ module.exports = {
 
             await user.save();
 
+            // if signup is successful log the user in
+            let token = jwt.sign(
+                { user_id: user._id, email: user.email, role: user.role },
+                config.encryption.hash,
+                { expiresIn: '2d' }
+            );
+
+            let encrypted_token = crypt.encrypt(token);
+            let mobile_token = encrypted_token.iv + ',' + encrypted_token.content;
+
             return res.status(200).json({
                 status: 'success',
-                message: 'user signup successful'
+                message: 'user signup successful',
+                data: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    token: mobile_token
+                }
             });
         } catch (error) {
             console.log(error);
@@ -93,7 +113,7 @@ module.exports = {
             //     iv: iv.toString('hex'),
             //     content: encrypted.toString('hex')
             // };
-            
+
             let mobile_token = encrypted_token.iv + ',' + encrypted_token.content;
             // console.log(mobile_token);
 

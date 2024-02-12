@@ -26,6 +26,9 @@ module.exports = {
             const validation = validate(schemaValidation.create, body);
             if (validation?.error) return res.status(400).json(validation.error);
 
+            // if currency is not provided, defaults to USD
+
+            const tokenData = req.tokenData;            
             const job = new Job({
                 title: body.title,
                 description: body.description,
@@ -33,7 +36,7 @@ module.exports = {
                 responsibilities: body.responsibilities,
                 location: body.location,
                 salaryRange: body.salaryRange,
-                employer: req.tokenData.id
+                employer: req.tokenData.user_id
             });
 
             await job.save();
@@ -87,8 +90,8 @@ module.exports = {
         try {
             let body = req.body;
             let params = req.params;
-            console.log('params', params);
-            console.log(params.id)
+            // console.log('params', params);
+            // console.log(params.id)
 
             /* validate request data */
             const validation = validate(schemaValidation.get, params);
@@ -130,6 +133,83 @@ module.exports = {
     all: async (req, res) => {
         try {
             const jobs = await Job.find({}, { applications: false }).populate('employer', 'email image profile.name');
+
+            return res.status(200).json({
+                status: 'success',
+                data: jobs
+            });
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                status: 'failed',
+                message: error.message
+            });
+        }
+    },
+    search: async (req, res) => {
+        try {
+            let body = req.body;
+
+            /* validate request data */
+            const validation = validate(schemaValidation.search, body);
+            if (validation?.error) return res.status(400).json(validation.error);
+
+            const jobs = await Job.find({
+                title: { $regex: body.search, $options: 'i' },
+                description: { $regex: body.search, $options: 'i' },
+                requirements: { $regex: body.search, $options: 'i' },
+                responsibilities: { $regex: body.search, $options: 'i' },
+                location: { $regex: body.search, $options: 'i' }
+            }, { applications: false }).populate('employer', 'email image profile.name').limit(body.limit);
+
+            return res.status(200).json({
+                status: 'success',
+                data: jobs
+            });
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                status: 'failed',
+                message: error.message
+            });
+        }
+    },
+    filter: async (req, res) => {
+        try {
+            let body = req.body;
+
+            /* validate request data */
+            const validation = validate(schemaValidation.filter, body);
+            if (validation?.error) return res.status(400).json(validation.error);
+
+            const jobs = await Job.find({
+                title: { $regex: body.title, $options: 'i' },
+                location: { $regex: body.location, $options: 'i' },
+                'salaryRange.low': { $gte: body.salaryRange.low || 0 },
+                'salaryRange.high': { $lte: body.salaryRange.high || 999999999 },
+                requirements: { $in: body.requirements },
+                responsibilities: { $in: body.responsibilities },
+                employer: body.employer
+            }, { applications: false }).populate('employer', 'email image profile.name').limit(body.limit);
+
+            return res.status(200).json({
+                status: 'success',
+                data: jobs
+            });
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                status: 'failed',
+                message: error.message
+            });
+        }
+    },
+    random: async (req, res) => {
+        try {
+            const jobs = await Job.aggregate([{ $sample: { size: 1 } }]);
 
             return res.status(200).json({
                 status: 'success',

@@ -49,9 +49,45 @@ module.exports = {
             .required()
     }),
     update: Joi.object().keys({
-        name: Joi.string().required(),
-        email: Joi.string().required(),
+        name: Joi.string(),
+        dob: Joi.date(),
+        contact: Joi.string(),
+        socialLinks: Joi.array().items(Joi.string()),
+        skills: Joi.array().items(Joi.string()),
+        qualifications: Joi.array().items(Joi.object().keys({
+            qualification: Joi.string().required(),
+            date: Joi.date().required(),
+            description: Joi.string().required()
+        })),
+        workExperience: Joi.array().items(Joi.object().keys({
+            position: Joi.string().required(),
+            company: Joi.string().required(),
+            startDate: Joi.date().required(),
+            endDate: Joi.date().required(),
+            isCurrent: Joi.boolean().required(),
+            description: Joi.string().required()
+        })),
+        education: Joi.array().items(Joi.object().keys({
+            institution: Joi.string().required(),
+            degree: Joi.string().required(),
+            field: Joi.string().required(),
+            startDate: Joi.date().required(),
+            endDate: Joi.date().required(),
+            description: Joi.string().required()
+        })),
+        companyName: Joi.string(),
+        industry: Joi.string()
+    }),
+    update_image: Joi.object().keys({
         image: Joi.string().required()
+    }),
+    add_work_experience: Joi.object().keys({
+        position: Joi.string().required(),
+        company: Joi.string().required(),
+        startDate: Joi.date().required(),
+        endDate: Joi.date().required(),
+        isCurrent: Joi.boolean().required(),
+        description: Joi.string().required()
     }),
     get: Joi.object().keys({
         id: Joi.string().required()

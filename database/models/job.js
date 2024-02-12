@@ -10,7 +10,7 @@ const jobSchema = new Schema({
     salaryRange: {
         low: { type: Number, required: true },
         high: { type: Number, required: true },
-        currency: { type: String, required: true }
+        currency: { type: String, default: 'USD' }
     },
     employer: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     applications: [{ type: Schema.Types.ObjectId, ref: 'Application' }]

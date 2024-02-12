@@ -37,6 +37,7 @@ module.exports = {
                 job: utils.mongoID(body.job),
                 applicant: utils.mongoID(body.applicant),
                 resume: body.resume,
+                description: body.description,
                 status: body.status
             });
 

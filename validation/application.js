@@ -5,6 +5,7 @@ module.exports = {
         job: Joi.string().required(),
         applicant: Joi.string().required(),
         resume: Joi.string().required(),
+        description: Joi.string().allow('', null),
         status: Joi.string().valid('pending', 'accepted', 'rejected').required()
     }),
     get: Joi.object().keys({
@@ -24,6 +25,7 @@ module.exports = {
         job: Joi.string().required(),
         applicant: Joi.string().required(),
         resume: Joi.string().required(),
+        description: Joi.string().allow('', null),
         status: Joi.string().valid('pending', 'accepted', 'rejected').required()
     })
 };

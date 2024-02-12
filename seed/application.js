@@ -1,15 +1,5 @@
 const { faker } = require('@faker-js/faker');
 
-// const applicationSchema = new Schema(
-//     {
-//         job: { type: Schema.Types.ObjectId, ref: 'Job', required: true },
-//         applicant: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-//         resume: { type: String, required: true },
-//         status: { type: String, enum: ['pending', 'accepted', 'rejected'], required: true, default: 'pending' }
-//     },
-//     { timestamps: true }
-// );
-
 const generateApplications = (jobs, applicant) => {
     const applications = [];
 
@@ -19,6 +9,7 @@ const generateApplications = (jobs, applicant) => {
             applicant: applicant,
             // file path or URL to the resume
             resume: faker.internet.url(),
+            description: faker.lorem.paragraph(),
             status: 'pending'
         });
     }

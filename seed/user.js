@@ -10,22 +10,13 @@ const generateUsers = (num, role) => {
     if (role === 'jobApplicant') {
         profile = {
             name: faker.internet.displayName(),
-            skills: [faker.lorem.word(), faker.lorem.word(), faker.lorem.word()],
-            qualifications: [faker.lorem.word(), faker.lorem.word(), faker.lorem.word()],
-            workExperience: [
-                {
-                    position: faker.person.jobTitle(),
-                    company: faker.company.name(),
-                    startDate: faker.date.past(),
-                    endDate: faker.date.past()
-                },
-                {
-                    position: faker.person.jobTitle(),
-                    company: faker.company.name(),
-                    startDate: faker.date.past(),
-                    endDate: faker.date.past()
-                }
-            ]
+            dob: faker.date.past(),
+            contact: faker.phone.number(),
+            socialLinks: [faker.internet.url()],
+            skills: [faker.lorem.word()],
+            qualifications: [{ qualification: faker.lorem.word(), date: faker.date.past(), description: faker.lorem.sentence() }],
+            workExperience: [{ position: faker.person.jobTitle(), company: faker.company.name(), startDate: faker.date.past(), endDate: faker.date.past(), isCurrent: false, description: faker.lorem.sentence() }],
+            education: [{ institution: faker.company.name(), degree: faker.person.jobTitle(), field: faker.person.jobArea(), startDate: faker.date.past(), endDate: faker.date.past(), description: faker.lorem.sentence() }]
         }
     } else if (role === 'employer') {
         profile = {

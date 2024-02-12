@@ -8,18 +8,19 @@ const userSchema = new Schema(
         role: { type: String, enum: ['jobApplicant', 'employer'], required: true, default: 'jobApplicant' },
         image: { type: String, required: false },
         profile: {
-            // User 1 - Job Applicant
             name: String,
+            dob: Date,
+            contact: String,
+            socialLinks: [String],
             skills: [String],
-            qualifications: [String],
-            workExperience: [{ position: String, company: String, startDate: Date, endDate: Date }],
+            qualifications: [{ qualification: String, date: Date, description: String }],
+            workExperience: [{ position: String, company: String, startDate: Date, endDate: Date, isCurrent: Boolean, description: String }],
+            education: [{ institution: String, degree: String, field: String, startDate: Date, endDate: Date, description: String }],
 
             // User 2 - Employer
             companyName: String,
             industry: String,
-            // Other employer-specific details
         },
-        // Add more fields as needed for user preferences, notifications, etc.
     },
     { timestamps: true }
 );
