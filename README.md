@@ -7,6 +7,10 @@ npm install or yarn install
 npm run dev or yarn dev
 ```
 
+## Postman Collection
+
+This API has a Postman collection that can be used to test the API. The collection can be found [here](https://api.postman.com/collections/20109264-88647060-0ab8-414d-8c7c-d27bcc60cce4?access_key=PMAT-01HPF0V7S7TG7AAJQFN86271A0). Some of the endpoints are demonstrated in this collection. 
+
 ## Environment Variables
 
 The following environment variables are required to run the API. They can be set in a `.env` file in the root of the project. The following is a sample `.env` file with all the required variables.
